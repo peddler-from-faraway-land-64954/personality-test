@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+	<head>
+		<title>test</title>
+		<link rel="stylesheet" href="https://unpkg.com/normalize.css@8.0.1/normalize.css" type="text/css">
+		<link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+	</head>
+	<body>
+		<script async src="https://ga.jspm.io/npm:es-module-shims@1.10.0/dist/es-module-shims.js" crossorigin="anonymous"></script>
+		<script type="importmap">
+		{
+		  "imports": {
+		    "buffer": "https://ga.jspm.io/npm:@jspm/core@2.1.0/nodelibs/browser/buffer.js"
+		  }
+		}
+		</script>
+		<h1>MMPI-2 Test</h1>
+		<label>
+			<p>Enter the question array</p>
+			<textarea id="questions">["Q1", "Q2", "Q3"]</textarea>
+			<button>Submit</button>
+		</label>
+
+		<script type="module" src="index.js"></script>
+	</body>
+</html>
