@@ -1,6 +1,6 @@
 let test = window.sessionStorage.getItem("test");
 if (test==null){
-	window.location.assign("/");
+	window.location.assign("./");
 }
 try {
 	test = JSON.parse(test);
@@ -52,7 +52,7 @@ form.addEventListener("submit", (e)=>{
 	const data = new FormData(form);
 	const dataString = [...data.entries()].map(i=>i[1]).join('');
 	window.sessionStorage.setItem("result",dataString);
-	window.location.assign("./result")
+	window.location.assign(`./result?data=${dataString}`)
 });
 
 document.querySelector("body").appendChild(h1);
