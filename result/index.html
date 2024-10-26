@@ -9,32 +9,39 @@
       If you don't use Google Chrome 89 or newer, please check if your browser
       supports importmaps: https://caniuse.com/?search=importmap
     -->
+    <script async src="https://ga.jspm.io/npm:es-module-shims@1.10.0/dist/es-module-shims.js" crossorigin="anonymous"></script>
     <script type="importmap">
-      {
-        "imports": {
-          "@wasmer/wasi": "https://ga.jspm.io/npm:@wasmer/wasi@0.12.0/lib/index.cjs.js",
-          "@wasmer/wasi/lib/bindings/browser": "https://ga.jspm.io/npm:@wasmer/wasi@0.12.0/lib/bindings/browser.js",
-          "@wasmer/wasmfs": "https://ga.jspm.io/npm:@wasmer/wasmfs@0.12.0/lib/index.cjs.js"
-        },
-        "scopes": {
-          "https://ga.jspm.io/": {
-            "buffer": "https://ga.jspm.io/npm:@jspm/core@2.0.0-beta.7/nodelibs/buffer.js",
-            "crypto": "https://ga.jspm.io/npm:@jspm/core@2.0.0-beta.7/nodelibs/crypto.js",
-            "fs": "https://ga.jspm.io/npm:@jspm/core@2.0.0-beta.7/nodelibs/fs.js",
-            "path": "https://ga.jspm.io/npm:@jspm/core@2.0.0-beta.7/nodelibs/path.js",
-            "path-browserify": "https://ga.jspm.io/npm:path-browserify@1.0.1/index.js",
-            "process": "https://ga.jspm.io/npm:@jspm/core@2.0.0-beta.7/nodelibs/process.js",
-            "randombytes": "https://ga.jspm.io/npm:randombytes@2.1.0/browser.js",
-            "randomfill": "https://ga.jspm.io/npm:randomfill@1.0.4/browser.js",
-            "safe-buffer": "https://ga.jspm.io/npm:safe-buffer@5.2.1/index.js",
-            "tty": "https://ga.jspm.io/npm:@jspm/core@2.0.0-beta.7/nodelibs/tty.js"
-          }
+    {
+      "imports": {
+        "@wasmer/wasi": "https://ga.jspm.io/npm:@wasmer/wasi@0.12.0/lib/index.cjs.js",
+        "@wasmer/wasi/lib/bindings/browser": "https://ga.jspm.io/npm:@wasmer/wasi@0.12.0/lib/bindings/browser.js",
+        "@wasmer/wasmfs": "https://ga.jspm.io/npm:@wasmer/wasmfs@0.12.0/lib/index.cjs.js",
+        "chart.js": "https://ga.jspm.io/npm:chart.js@4.4.5/dist/chart.js",
+        "chart.js/auto": "https://ga.jspm.io/npm:chart.js@4.4.5/auto/auto.js"
+      },
+      "scopes": {
+        "https://ga.jspm.io/": {
+          "@kurkle/color": "https://ga.jspm.io/npm:@kurkle/color@0.3.2/dist/color.esm.js",
+          "buffer": "https://ga.jspm.io/npm:@jspm/core@2.1.0/nodelibs/browser/buffer.js",
+          "crypto": "https://ga.jspm.io/npm:@jspm/core@2.1.0/nodelibs/browser/crypto.js",
+          "fs": "https://ga.jspm.io/npm:@jspm/core@2.1.0/nodelibs/browser/fs.js",
+          "path": "https://ga.jspm.io/npm:@jspm/core@2.1.0/nodelibs/browser/path.js",
+          "path-browserify": "https://ga.jspm.io/npm:path-browserify@1.0.1/index.js",
+          "process": "https://ga.jspm.io/npm:@jspm/core@2.1.0/nodelibs/browser/process.js",
+          "randombytes": "https://ga.jspm.io/npm:randombytes@2.1.0/browser.js",
+          "randomfill": "https://ga.jspm.io/npm:randomfill@1.0.4/browser.js",
+          "safe-buffer": "https://ga.jspm.io/npm:safe-buffer@5.2.1/index.js",
+          "tty": "https://ga.jspm.io/npm:@jspm/core@2.1.0/nodelibs/browser/tty.js"
         }
       }
+    }
     </script>
     <script type="module" src="index.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/normalize.css@8.0.1/normalize.css" type="text/css">
+    <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
   </head>
   <body>
     <p id="console">Loading...</p>
+    <div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
   </body>
 </html>
