@@ -82,47 +82,7 @@ const getString = (pointer, memory) => {
 	return string.slice(0,-1);
 }
 
-window.addEventListener('load', async (_event) => {
-	const wasmfs = new WasmFs();
-	const wasi = new WASI({
-		bindings: {
-			...wasiBindings.default,
-			fs: wasmfs.fs
-		}
-	});
-
-	const module = await WebAssembly.compileStreaming(fetch('./main.wasm'));
-	const { wasi_snapshot_preview1 } = wasi.getImports(module);
-
-	const memory = new WebAssembly.Memory({ initial: 500 });
-	wasi.setMemory(memory);
-	const env = { memory };
-	// const text = window.sessionStorage.getItem("result");
-	let text = null;
-	const urlParams = new URLSearchParams(window.location.search);
-	if (urlParams.has('data')){
-		text = urlParams.get('data');
-	}
-	// let text = "TTFTFTFFFFTFTTTTTFTFFTFFFTFTFFTTFTFFTTTFTFFFTTTTFTTTTFTTTFFFFTTTTFTFFFTFTFTTTTTFTTTFFFTTTTTTTTTFTFFTTTFTFTFTTTFFFFTTTFFFTTFFTTTTTTFTFFTTFFTFTTTFFFTFTFTFTTTFFTTTTFFTTTTTTTTFTTTTTFFTTFFTTTTTTTFTTTTTFFTFFFTTTFFFFTFFFTFFTTTFTFTTTFTFFTTTTTFTFFFFTFTFFTFTFTTFFTTTFTTTFTFFTTFTTTTFTFFTTTTFTFTTTTTFTTFFTFTTFFTTTTFTTTTTTTTTTTTTTTFTTFTFTTTTFTFTFFFFTTTFTFTFFTTTFFFTFTFTTFFTFTFTTTTTTFTTFTFTTFFFFFTTTTFFFTFFTTFTFTTTFTTTTTTTTFTFFFTTFTTTTTTTFFTTTTFTTFFFTTTTFTFFFTTTTTTFTTTTTFTFTTFTTTTTTFFTTTTTFFFTFTTFTFFTFFTTTFFFTFTTTFTTTFTTTFFFTTFTTTTFFTTFTTFFTFFFTFTTFFTFTTFFTTTFFFFTFTFTFFFTFFFTTTF";
-	if (text==null){
-		return;
-	} else if (text.length!=567){
-		return;
-	} else {
-		const reg = /^(T|F)*$/;
-		if (text.match(reg)==null){
-			return;
-		}
-	}
-	const tarray = Int8Array.from(Array.from(text).map(letter => letter.charCodeAt(0)));
-	const array = new Uint8Array(memory.buffer, 0, text.length+1);
-	array.set(tarray);
-
-	const instance = await WebAssembly.instantiate(module, { env, wasi_snapshot_preview1 });
-
-	const result = getString(instance.exports.gradeAsJSON(tarray, 0), memory);
-	console.log(result);
-	const res = JSON.parse(result);
+const outputResult = (res) => {
 	drawChart(res[0]["raw"], res[1]["raw"]);
 	const cols = [
 		"name", "description", "raw", "KScore", "tscore", "percentile"
@@ -180,28 +140,76 @@ window.addEventListener('load', async (_event) => {
 				return a[1]-b[1];
 			})
 			.forEach((j)=>{
-			const tr = document.createElement("tr");
-			const tdname = document.createElement("td");
-			const tddesc = document.createElement("td");
-			const tdqs = document.createElement("td");
-			const tdans = document.createElement("td");
-			const tdtxt = document.createElement("td");
-			tdname.innerText = name;
-			tddesc.innerText = desc;
-			tdqs.innerText = j[0];
-			tdans.innerText = j[1];
-			tdtxt.innerText = "AAA";
-			if (test!=null){
-				tdtxt.innerText = ptest[j[0]];
-			}
-			[tdname, tddesc, tdqs, tdans, tdtxt].forEach((x)=>{
-				tr.appendChild(x);
+				const tr = document.createElement("tr");
+				const tdname = document.createElement("td");
+				const tddesc = document.createElement("td");
+				const tdqs = document.createElement("td");
+				const tdans = document.createElement("td");
+				const tdtxt = document.createElement("td");
+				tdname.innerText = name;
+				tddesc.innerText = desc;
+				tdqs.innerText = j[0];
+				tdans.innerText = j[1];
+				tdtxt.innerText = "AAA";
+				if (test!=null){
+					tdtxt.innerText = ptest[j[0]];
+				}
+				[tdname, tddesc, tdqs, tdans, tdtxt].forEach((x)=>{
+					tr.appendChild(x);
+				})
+				qtable.appendChild(tr);
 			})
-			qtable.appendChild(tr);
-		})
 	})
 	div.appendChild(qtable);
 	document.querySelector("body").appendChild(div);
+}
+
+window.addEventListener('load', async (_event) => {
+	const wasmfs = new WasmFs();
+	const wasi = new WASI({
+		bindings: {
+			...wasiBindings.default,
+			fs: wasmfs.fs
+		}
+	});
+
+	const module = await WebAssembly.compileStreaming(fetch('./main.wasm'));
+	const { wasi_snapshot_preview1 } = wasi.getImports(module);
+
+	const memory = new WebAssembly.Memory({ initial: 500 });
+	wasi.setMemory(memory);
+	const env = { memory };
+	// const text = window.sessionStorage.getItem("result");
+	let text = null;
+	const urlParams = new URLSearchParams(window.location.search);
+	let male=true;
+	if (urlParams.has('data')){
+		text = urlParams.get('data');
+	}
+	if (urlParams.has('gender')){
+		male = urlParams.get('gender')=="M";
+	}
+	// let text = "TTFTFTFFFFTFTTTTTFTFFTFFFTFTFFTTFTFFTTTFTFFFTTTTFTTTTFTTTFFFFTTTTFTFFFTFTFTTTTTFTTTFFFTTTTTTTTTFTFFTTTFTFTFTTTFFFFTTTFFFTTFFTTTTTTFTFFTTFFTFTTTFFFTFTFTFTTTFFTTTTFFTTTTTTTTFTTTTTFFTTFFTTTTTTTFTTTTTFFTFFFTTTFFFFTFFFTFFTTTFTFTTTFTFFTTTTTFTFFFFTFTFFTFTFTTFFTTTFTTTFTFFTTFTTTTFTFFTTTTFTFTTTTTFTTFFTFTTFFTTTTFTTTTTTTTTTTTTTTFTTFTFTTTTFTFTFFFFTTTFTFTFFTTTFFFTFTFTTFFTFTFTTTTTTFTTFTFTTFFFFFTTTTFFFTFFTTFTFTTTFTTTTTTTTFTFFFTTFTTTTTTTFFTTTTFTTFFFTTTTFTFFFTTTTTTFTTTTTFTFTTFTTTTTTFFTTTTTFFFTFTTFTFFTFFTTTFFFTFTTTFTTTFTTTFFFTTFTTTTFFTTFTTFFTFFFTFTTFFTFTTFFTTTFFFFTFTFTFFFTFFFTTTF";
+	if (text==null){
+		return;
+	} else if (text.length!=567){
+		return;
+	} else {
+		const reg = /^(T|F)*$/;
+		if (text.match(reg)==null){
+			return;
+		}
+	}
+	const tarray = Int8Array.from(Array.from(text).map(letter => letter.charCodeAt(0)));
+	const array = new Uint8Array(memory.buffer, 0, text.length+1);
+	array.set(tarray);
+
+	const instance = await WebAssembly.instantiate(module, { env, wasi_snapshot_preview1 });
+
+	const result = getString(instance.exports.gradeAsJSON(tarray, male?0:1), memory);
+	console.log(result);
+	const res = JSON.parse(result);
+	outputResult(res);
 	document.getElementById('console').remove();
 	// console.log(stdout);
 });
